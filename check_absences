@@ -1,0 +1,11 @@
+for year in seq `2010 2011`; 
+	do for case in */;
+		do;
+		if [ "$(ls -A .)" ];
+		then 
+		else 
+			echo case
+	done;
+	cd ..
+;done
+	
