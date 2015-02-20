@@ -57,6 +57,7 @@ def queuer(analyzer,headers=[],flattening_rule=default_flattener,skip_list=[],sa
         
         #Iterate over the requested list of years
         for year in xrange(start,end+1):
+            print("Starting work on " + str(year))
             year_folder_path = root + str(year) + "/"
             
             #Iterate over the opinions in a year folder
