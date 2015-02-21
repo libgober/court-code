@@ -26,7 +26,7 @@ def prompt():
     parser.add_argument("--root", help="The parent folder that contains all the opinion years. Defaults to current working directory", default=".")
     parser.add_argument("--save", help="The name of the file to save. Default is results.tsv", type=argparse.FileType('ab+'), default="./results.tsv")
     parser.add_argument("--start", help="The year to start scanning. Default is 1800.", type=int, default=1800)
-    parser.add_argument("--end", help="The latest year to scan. It is inclusive, so if the last year to scan is 2014 then put 2014, not 2015.", type=int, default=2015)
+    parser.add_argument("--end", help="The latest year to scan. It is inclusive, so if the last year to scan is 2014 then put 2014, not 2015.", type=int, default=2014)
     parser.add_argument("--top", help = "The highest row to scan.", default=1)
     parser.add_argument("--bottom", help="The final row to scan, inclusive. If the last case number is 79 then write 79, not 80.")
     args = parser.parse_args()
@@ -49,6 +49,9 @@ def default_flattener(list_of_list):
 
 #queuer handles the application of the analyzer function to a set of documents. 
 def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./results.tsv",root=".",start=1800,end=2015,top=1,bottom=None):
+    if flattener == None:
+        flattener = default_flattener
+    
     #open the save file for writing
     with save:
         writer = csv.writer(save, delimiter = "\t")
@@ -121,8 +124,12 @@ def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./
                 else:
                     preoutput = []
                     for filepath in opinion_files:
-                        document_path = case_folder + filepath
-                        preoutput.append(analyzer(open(document_path,"r")))
+                        #skip hidden files
+                        if filepath[0] == ".":
+                            continue
+                        else:
+                            document_path = case_folder + filepath
+                            preoutput.append(analyzer(open(document_path,"r")))
                     
                     output = flattener(preoutput)
                 

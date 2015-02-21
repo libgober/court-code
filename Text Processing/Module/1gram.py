@@ -34,6 +34,11 @@ def analyzer(doc):
     #Extract opinion
     opinion_html = soup.find(id="opinion")
     
+    #If fail to get any text print a warning
+    if opinion_html == None:
+        print("Was not able to extract any text from " + doc.name + " I will try to move on")
+        opinion_html = ""
+    
     #Convert Opinion HTML to String
     opinion = opinion_html.get_text(" ",strip=True)
     
