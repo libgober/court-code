@@ -27,8 +27,8 @@ def prompt():
     parser.add_argument("--save", help="The name of the file to save. Default is results.tsv", type=argparse.FileType('ab+'), default="./results.tsv")
     parser.add_argument("--start", help="The year to start scanning. Default is 1800.", type=int, default=1800)
     parser.add_argument("--end", help="The latest year to scan. It is inclusive, so if the last year to scan is 2014 then put 2014, not 2015.", type=int, default=2014)
-    parser.add_argument("--top", help = "The highest row to scan.", default=1)
-    parser.add_argument("--bottom", help="The final row to scan, inclusive. If the last case number is 79 then write 79, not 80.")
+    parser.add_argument("--top", help = "The highest row to scan.", default=1,type=int)
+    parser.add_argument("--bottom", help="The final row to scan, inclusive. If the last case number is 79 then write 79, not 80.",type=int)
     args = parser.parse_args()
     
     if not (args.root[-1] == "/"):
