@@ -37,11 +37,14 @@ def prompt():
     return([args.save,args.root,args.start,args.end,args.top,args.bottom])
 
 
-#assumes a Counter type
-def default_flattener(list_of_counters):
+#Input is a list of list of pairs, output must be a list of tuples
+def default_flattener(list_of_list):
     final = Counter()
-    for counter in list_of_counters:
-        final = final + counter
+    for list_of_pairs in list_of_list:
+        final = final + Counter(dict(list_of_pairs))
+    
+    return(final.items())
+    
 
 
 #queuer handles the application of the analyzer function to a set of documents. 
@@ -118,16 +121,28 @@ def queuer(analyzer,headers=[],flattening_rule=default_flattener,skip_list=[],sa
                 else:
                     preoutput = []
                     for filepath in opinion_files:
-                        document_path = case_folder + file_path
+                        document_path = case_folder + filepath
                         preoutput.append(analyzer(open(document_path,"r")))
                     
                     output = flattener(preoutput)
                 
             
     ############# Now we have some output for each case, we want to save it by writing to the tsv
+    ############## I assume it's a counter type object
+    
+                #create case_id to attach to 
+                case_id = case_number + str(year)
             
-                writer.writerows(output)
+                for row in output:
+                    writer.writerow(row + (case_id,))
 
 
+
+############### OTHER USEFUL FUNCTIONS
+
+
+#Cleans up certain issues I was noticing in how bs4 produces strings
+def string_fixes(souptext):
+    return(souptext)
 
 

@@ -4,12 +4,47 @@
 
 from handlers import prompt, queuer
 from collections import Counter 
+from bs4 import BeautifulSoup #for parsing our text files
 
+
+
+
+
+
+
+############# EDIT HERE #################
+
+########## Helpers
+
+def evacuate(string):
+    disclaimer = "Official Supreme Court case law is only found in the print version of the United States Reports\. Justia case law is provided for general informational purposes only, and may not reflect current legal developments, verdicts or settlements\. We make no warranties or guarantees about the accuracy, completeness, or adequacy of the information contained on this site or information linked to from this site\. Please check official sources\."
+    string = re.sub(disclaimer,"",string,count=0)
+    string = string.lower()
+    return string
+
+
+########## MAIN FUNCTIONS
 #analyzes a single opinion in some way. The input is an "open file" in read mode. Almost any information you could want about the opinion is accessible in its name.
 #Analyzer must return a list of tuples (list of pairs to use default flattener)
 def analyzer(doc):
-    count = Counter(a=1)
-    return count.items()
+    
+    #Parse HTML into beautiful soup
+    soup = BeautifulSoup(doc)
+    
+    #Extract opinion
+    opinion_html = soup.find(id="opinion")
+    
+    #Convert Opinion HTML to String
+    opinion = opinion_html.get_text(" ",strip=True)
+    
+    #Expel materials that are not actually part of opinion (e.g. disclaimers, information about parties, docket no.)
+    #Also fixes strings
+    opinion = evacuate(opinion)  
+
+    #Divide the text of the opinion into a list of words and then count them
+    tabulation = Counter(re.findall(r"[a-zA-Z']{1,46}",opinion))
+    
+    return tabulation.items()
 
 
 
@@ -28,7 +63,7 @@ def analyzer(doc):
 #Optionally include a list of headers to add
 headers = []
 
-#Optionally include a rule for dealing with the possibility of multiple documents in a single folde/Users/brianlibgoberr. 
+#Optionally include a rule for dealing with the possibility of multiple documents in a single folder. 
 #Input will be a list of list of tuples. Output must be a list of tuples.
 #Default will be to combine all the files not found in the skip list.
 flattening_rule = None
