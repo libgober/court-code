@@ -48,7 +48,7 @@ def default_flattener(list_of_list):
 
 
 #queuer handles the application of the analyzer function to a set of documents. 
-def queuer(analyzer,headers=[],flattening_rule=default_flattener,skip_list=[],save="./results.tsv",root=".",start=1800,end=2015,top=1,bottom=None):
+def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./results.tsv",root=".",start=1800,end=2015,top=1,bottom=None):
     #open the save file for writing
     with save:
         writer = csv.writer(save, delimiter = "\t")
