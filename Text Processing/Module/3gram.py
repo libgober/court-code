@@ -59,7 +59,7 @@ def analyzer(doc):
     #These will be tuples which is inconvenient for writing to csv since we'll get separate columns
     better_list_of_trigrams  = [tup[0] + " " + tup[1] + " " + tup[2] for tup in list_of_trigrams]
     
-    return Counter(better_list_of_bigrams).items()
+    return Counter(better_list_of_trigrams).items()
 
 
 
