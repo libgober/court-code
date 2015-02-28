@@ -5,7 +5,7 @@
 from handlers import prompt, queuer
 from collections import Counter 
 from bs4 import BeautifulSoup #for parsing our text files
-
+import re
 
 # TESTING REWRITING
 # To load an opinion
