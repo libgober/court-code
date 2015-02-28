@@ -55,7 +55,7 @@ def analyzer(doc):
     #Throw away everything that occurs only once in the opinion
     tab = {key:value for key,value in tabulation.items() if value>1}
 
-    return tabulation.items()
+    return tab.items()
 
 
 

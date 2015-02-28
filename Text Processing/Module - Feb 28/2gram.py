@@ -59,7 +59,13 @@ def analyzer(doc):
     #These will be tuples which is inconvenient for writing to csv since we'll get separate columns
     better_list_of_bigrams  = [tup[0] + " " + tup[1] for tup in list_of_bigrams]
     
-    return Counter(better_list_of_bigrams).items()
+    #count the bigrams
+    tabulation = Counter(better_list_of_bigrams).items()
+    
+    #remove all bigrams that do not occur more than once
+    tab = {key:value for key,value in tabulation if value>1}
+    
+    return tab.items
 
 
 
