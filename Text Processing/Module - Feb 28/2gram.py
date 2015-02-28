@@ -65,7 +65,7 @@ def analyzer(doc):
     #remove all bigrams that do not occur more than once
     tab = {key:value for key,value in tabulation if value>1}
     
-    return tab.items
+    return tab.items()
 
 
 

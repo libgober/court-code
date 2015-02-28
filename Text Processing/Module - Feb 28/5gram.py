@@ -54,13 +54,13 @@ def analyzer(doc):
     list_of_words = re.findall(r"[a-zA-Z']{1,46}",opinion)
     
     #create a list of trigrams
-    list_of_trigrams = izip(list_of_words, islice(list_of_words,1,None), islice(list_of_words,2,None))
+    list_of_quintograms = izip(list_of_words, islice(list_of_words,1,None), islice(list_of_words,2,None),islice(list_of_words,3,None),islice(list_of_words,4,None))
     
     #These will be tuples which is inconvenient for writing to csv since we'll get separate columns
-    better_list_of_trigrams  = [tup[0] + " " + tup[1] + " " + tup[2] for tup in list_of_trigrams]
+    better_list_of_quintograms  = [tup[0] + " " + tup[1] + " " + tup[2] + " " + tup[3] + " " + tup[4] for tup in list_of_quintograms]
     
     #count the bigrams
-    tabulation = Counter(better_list_of_trigrams).items()
+    tabulation = Counter(better_list_of_quintograms).items()
     
     #remove all bigrams that do not occur more than once
     tab = {key:value for key,value in tabulation if value>1}
