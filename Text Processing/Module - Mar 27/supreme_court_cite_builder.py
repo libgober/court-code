@@ -78,11 +78,8 @@ def analyzer(doc):
 
     #Divide the text of the opinion into a list of words and then count them
     tabulation = Counter(re.findall(search_expression,unicode(opinion)))
-    
-    #Throw away everything that occurs only once in the opinion
-    tab = {key:value for key,value in tabulation.items() if value>1}
-
-    return tab.items()
+ 
+    return tabulation.key()
 
 #Optionally include a list of headers to add
 headers = []
