@@ -16,9 +16,30 @@
 
 import argparse
 import os
-import csv
+import csv, codecs, cStringIO
 from collections import Counter 
 import re
+
+class UnicodeWriter:
+    def __init__(self, f, dialect=csv.excel, encoding="utf-8-sig", **kwds):
+        self.queue = cStringIO.StringIO()
+        self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
+        self.stream = f
+        self.encoder = codecs.getincrementalencoder(encoding)()
+    def writerow(self, row):
+        '''writerow(unicode) -> None
+        This function takes a Unicode string and encodes it to the output.
+        '''
+        self.writer.writerow([s.encode("utf-8") for s in row])
+        data = self.queue.getvalue()
+        data = data.decode("utf-8")
+        data = self.encoder.encode(data)
+        self.stream.write(data)
+        self.queue.truncate(0)
+
+    def writerows(self, rows):
+        for row in rows:
+            self.writerow(row)
 
 
 def prompt():
@@ -54,7 +75,7 @@ def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./
     
     #open the save file for writing
     with save:
-        writer = csv.writer(save, delimiter = "\t")
+        writer = UnicodeWriter(save, delimiter = "\t")
         #check if the file previously existed
         if os.stat(save.name).st_size == 0:
             writer.writerow(headers)
@@ -141,7 +162,7 @@ def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./
                 case_id = case_number + str(year)
             
                 for row in output:
-                    writer.writerow(row + (case_number,year))
+                    writer.writerow(row + (citation,case_number,year))
 
 
 

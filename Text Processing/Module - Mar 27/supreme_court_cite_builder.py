@@ -77,9 +77,9 @@ def analyzer(doc):
     search_expression = reduce(lambda x, y: x + "|" + y,particular_regexes)
 
     #Divide the text of the opinion into a list of words and then count them
-    tabulation = Counter(re.findall(search_expression,unicode(opinion)))
+    tabulation = Counter(re.findall(search_expression,opinion))
  
-    return tabulation.key()
+    return tabulation.keys()
 
 #Optionally include a list of headers to add
 headers = []
