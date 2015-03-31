@@ -77,7 +77,7 @@ def analyzer(doc):
     search_expression = reduce(lambda x, y: x + "|" + y,particular_regexes)
 
     #Divide the text of the opinion into a list of words and then count them
-    tabulation = Counter(re.findall(search_expression),unicode(opinion)))
+    tabulation = Counter(re.findall(search_expression,unicode(opinion)))
     
     #Throw away everything that occurs only once in the opinion
     tab = {key:value for key,value in tabulation.items() if value>1}
