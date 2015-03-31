@@ -163,7 +163,6 @@ def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./
             
                 for row in output:
                     what_to_print = (row,citation,case_number,unicode(year))
-                    print(what_to_print)
                     writer.writerow(what_to_print)
 
 

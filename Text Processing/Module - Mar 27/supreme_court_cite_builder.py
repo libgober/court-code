@@ -79,7 +79,7 @@ def analyzer(doc):
     #Divide the text of the opinion into a list of words and then count them
     tabulation = Counter(re.findall(search_expression,opinion))
  
-    return tabulation.keys()
+    return tabulation
 
 #Optionally include a list of headers to add
 headers = []
