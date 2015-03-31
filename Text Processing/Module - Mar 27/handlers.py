@@ -162,7 +162,9 @@ def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./
                 case_id = case_number + str(year)
             
                 for row in output:
-                    writer.writerow(row + (citation,case_number,year))
+                    what_to_print = row + (citation,case_number,year)
+                    print(what_to_print)
+                    writer.writerow(what_to_print)
 
 
 
