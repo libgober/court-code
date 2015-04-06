@@ -37,6 +37,8 @@ def fix_oneoffs(tabulation):
         tabulation["455 U.S. 422"]
     if tabulation["458 U.S. ___ (1982)"] != 0:
         del tabulation["458 U.S. ___ (1982)"] #seems to be this https://supreme.justia.com/cases/federal/us/463/1224/case.html, it's a petition for cert and won't be significant
+    if tabulation["459 U.S. ___ (1982)"] !=0:
+        del tabulation["459 U.S. ___ (1982)"] # too many possible ones of this
     return(tabulation)
     
     
