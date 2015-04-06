@@ -28,6 +28,13 @@ def evacuate(string):
     string = string.lower()
     return string
     
+def fix_oneoffs(tabulation):
+    if tabulation["411 U.S. ___, 28 (1973)"] != 0:
+        del tabulation["411 U.S. ___, 28 (1973)"]
+        tabulation["411 U.S. 1, 28 (1973)"] = 1
+    return(tabulation)
+    
+    
 def rewrite_values(tabulation):
     keys = tabulation.keys()
     #define some functions that find a matching regular expression like (5) (cranch) (37)
@@ -123,6 +130,9 @@ def analyzer(doc):
 
     #Divide the text of the opinion into a list of words and then count them
     tabulation = Counter(re.findall(search_expression,opinion))
+    
+    #rewrite unpatterned values that have clear corrections; called every time so consider maybe testing before calling if efficiency drops
+    fix_oneoffs(tabulation)
     
     #rewrite the dictionary values so that they contain "normalized" and more easily countable text.
     return rewrite_values(tabulation) 
