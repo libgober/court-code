@@ -54,7 +54,7 @@ def rewrite_values(tabulation):
     peters = re.compile("([0-9]{1,3})[\s\(]*([pP]et?e?r?s?)[.\s\)]*([0-9]{1,4})").search
     wheaton = re.compile("([0-9]{1,3})[\s\(]*([wW]he?a?t?o?n?)[.\s\)]*([0-9]{1,4})").search
     dallas = re.compile("([0-9]{1,3})[\s\(]*([dD]al?l?a?s?)[.\s\)]*([0-9]{1,4})").search
-    us = re.compile("([0-9](?![0-9]{0,2}\s*[uU][.\s]*[sS]*[.\s]*[0-9]{1,4}[.\s\)]*[cC|wW|bB|hH|dD|pP]))\s*([uU][.\s]*[sS]*)[.\s]*([0-9_]{1,4})").search
+    us = re.compile("([0-9]*(?![0-9]{0,2}\s*[uU][.\s]*[sS]*[.\s]*[0-9]{1,4}[.\s\)]*[cC|wW|bB|hH|dD|pP]))\s*([uU][.\s]*[sS]*)[.\s]*([0-9_]{1,4})").search
     sct = re.compile("([0-9]{1,3})[\s\(]*([sS][.\s]*[cC]*[tT]*[.\s]*)[.\s\)]*([0-9_]{1,4})").search
     #gather these functions into a list
     funcs = [dallas,cranch,wheaton,peters,howard,black,wallace,us,sct]
@@ -145,7 +145,7 @@ def analyzer(doc):
     #fix_oneoffs(tabulation)
     
     #rewrite the dictionary values so that they contain "normalized" and more easily countable text.
-    return rewrite_values(tabulation) 
+    return(rewrite_values(tabulation))
 
 #Optionally include a list of headers to add
 headers = []
