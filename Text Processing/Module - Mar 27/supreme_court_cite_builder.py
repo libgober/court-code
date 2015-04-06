@@ -31,14 +31,14 @@ def evacuate(string):
 def rewrite_values(tabulation):
     keys = tabulation.keys()
     #define some functions that find a matching regular expression like (5) (cranch) (37)
-    cranch = re.compile("([0-9]{1,3})\s*([cC]ra?n?c?h?)[.\s]*([0-9]{1,4})").search
-    wallace = re.compile("([0-9]{1,3})\s*([wW]al?l?a?c?e?)[.\s]*([0-9]{1,4})").search
-    black = re.compile("([0-9]{1,3})\s*([bB]la?c?k?)[.\s]*([0-9]{1,4})").search
-    howard = re.compile("([0-9]{1,3})\s*([hH]ow?a?r?d?)[.\s]*([0-9]{1,4})").search
-    peters = re.compile("([0-9]{1,3})\s*([pP]et?e?r?s?)[.\s]*([0-9]{1,4})").search
-    wheaton = re.compile("([0-9]{1,3})\s*([wW]he?a?t?o?n?)[.\s]*([0-9]{1,4})").search
-    dallas = re.compile("([0-9]{1,3})\s*([dD]al?l?a?s?)[.\s]*([0-9]{1,4})").search
-    us = re.compile("([0-9]{1,3})\s*([uU][.\s]*[sS]*)[.\s]*([0-9]{1,4})(?![.\s]*[cC|wW|bB|hH|wWdD])").search
+    cranch = re.compile("([0-9]{1,3})[\s\(]*([cC]ra?n?c?h?)[.\s\)]*([0-9]{1,4})").search
+    wallace = re.compile("([0-9]{1,3})[\s\(]*([wW]al?l?a?c?e?)[.\s\)]*([0-9]{1,4})").search
+    black = re.compile("([0-9]{1,3})[\s\(]*([bB]la?c?k?)[.\s\)]*([0-9]{1,4})").search
+    howard = re.compile("([0-9]{1,3})[\s\(]*([hH]ow?a?r?d?)[.\s\)]*([0-9]{1,4})").search
+    peters = re.compile("([0-9]{1,3})[\s\(]*([pP]et?e?r?s?)[.\s\)]*([0-9]{1,4})").search
+    wheaton = re.compile("([0-9]{1,3})[\s\(]*([wW]he?a?t?o?n?)[.\s\)]*([0-9]{1,4})").search
+    dallas = re.compile("([0-9]{1,3})[\s\(]*([dD]al?l?a?s?)[.\s\)]*([0-9]{1,4})").search
+    us = re.compile("([0-9]{1,3})\s*([uU][.\s]*[sS]*)[.\s]*([0-9]{1,4})(?![.\s\)]*[cC|wW|bB|hH|wWdD])").search
     
     #gather these functions into a list
     funcs = [dallas,cranch,wheaton,peters,howard,black,wallace,us]
@@ -49,7 +49,7 @@ def rewrite_values(tabulation):
         results = [func(key) for func in funcs]
         #ensure no double-matches
         if sum([result is not None for result in results]) != 1:
-            raise NameError("UH OH YOUR REGEX DIDNT WORK, TWO EXPRESSIONS MATCHED " + key +  str([result.group(0) for result in results if result is not None]) + str(sum([result is not None for result in results])))
+            raise NameError("UH OH YOUR REGEX DIDNT WORK, NOT SINGLE MATCHING EXPRESSION " + key +  str([result.group(0) for result in results if result is not None]) + str(sum([result is not None for result in results])))
         #find the element that is not null, this will throw an exception if nothing is matched, which shouldn't happen ever
         match = next(result for result in results if result is not None)
         #get the index of the match so we know which reporter it was in
