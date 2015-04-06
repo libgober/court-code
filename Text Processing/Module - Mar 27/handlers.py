@@ -161,8 +161,8 @@ def queuer(analyzer,headers=[],flattener=default_flattener,skip_list=[],save="./
                 #create case_id to attach to 
                 case_id = case_number + str(year)
             
-                for row in output:
-                    what_to_print = (row,citation,case_number,unicode(year))
+                for row in output.items():
+                    what_to_print = row + (citation,case_number,unicode(year))
                     writer.writerow(what_to_print)
 
 
