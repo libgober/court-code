@@ -39,6 +39,8 @@ def fix_oneoffs(tabulation):
         del tabulation["458 U.S. ___ (1982)"] #seems to be this https://supreme.justia.com/cases/federal/us/463/1224/case.html, it's a petition for cert and won't be significant
     if tabulation["459 U.S . ___"] !=0: #note that this is interestingly dateless, this may allow us to uniquely determine what source was cited
         del tabulation["459 U.S . ___"] # too many possible ones of this
+    if tabulation["459 U.S. ___ (1982)"] !=0:
+        del tabulation["459 U.S. ___ (1982)"]
     return(tabulation)
     
     
