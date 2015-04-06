@@ -60,11 +60,10 @@ def prompt():
 
 #Input is a list of list of pairs, output must be a list of tuples
 def default_flattener(list_of_list):
-    final = Counter()
+    final = {}
     for list_of_pairs in list_of_list:
-        final = final + Counter(dict(list_of_pairs))
-    
-    return(final.items())
+        final.update(list_of_pairs)
+    return(final)
     
 
 
