@@ -63,6 +63,7 @@ def default_flattener(list_of_list):
     final = {}
     for list_of_pairs in list_of_list:
         final.update(list_of_pairs)
+    print(final)
     return(final)
     
 
