@@ -12,8 +12,10 @@ import re
 # To load an opinion
 # document_path =  "/Users/brianlibgober/Box Sync/Backup/Justia2/2000/79 New York v. Hill, 528 U.S. 110/79 New York v. Hill, 528 U.S. 110.txt"
 # f = open(document_path,"r")
+# f = open("/Users/brianlibgober/Desktop/0 Bush v. Gore, 531 U.S. 98.txt","r")
 # soup = BeautifulSoup(f)
-
+#opinion_html = soup.find(id="opinion")
+# opinion = opinion_html.get_text(" ",strip=True)
 
 
 ############# EDIT HERE #################
@@ -25,13 +27,57 @@ def evacuate(string):
     string = re.sub(disclaimer,"",string,count=0)
     string = string.lower()
     return string
+    
+def rewrite_values(tabulation):
+    keys = tabulation.keys()
+    #define some functions that find a matching regular expression like (5) (cranch) (37)
+    cranch = re.compile("([0-9]{1,3})\s*([cC]ra?n?c?h?)[.\s]*([0-9]{1,4})").search
+    wallace = re.compile("([0-9]{1,3})\s*([wW]al?l?a?c?e?)[.\s]*([0-9]{1,4})").search
+    black = re.compile("([0-9]{1,3})\s*([bB]la?c?k?)[.\s]*([0-9]{1,4})").search
+    howard = re.compile("([0-9]{1,3})\s*([hH]ow?a?r?d?)[.\s]*([0-9]{1,4})").search
+    peters = re.compile("([0-9]{1,3})\s*([pP]et?e?r?s?)[.\s]*([0-9]{1,4})").search
+    wheaton = re.compile("([0-9]{1,3})\s*([wW]he?a?t?o?n?)[.\s]*([0-9]{1,4})").search
+    dallas = re.compile("([0-9]{1,3})\s*([dD]al?l?a?s?)[.\s]*([0-9]{1,4})").search
+    us = re.compile("([0-9]{1,3})\s*([uU][.\s]*[sS]*)[.\s]*([0-9]{1,4})(?![.\s]*[cC|wW|bB|hH|wWdD])").search
+    
+    #gather these functions into a list
+    funcs = [dallas,cranch,wheaton,peters,howard,black,wallace,us]
+    
+    #apply the list to each key in dictionary
+    for key in keys:
+        #these should all be none except 1
+        results = [func(key) for func in funcs]
+        #ensure no double-matches
+        if sum([result is not None for result in results]) != 1:
+            raise NameError("UH OH YOUR REGEX DIDNT WORK, TWO EXPRESSIONS MATCHED " + key +  str([result.group(0) for result in results if result is not None]) + str(sum([result is not None for result in results])))
+        #find the element that is not null, this will throw an exception if nothing is matched, which shouldn't happen ever
+        match = next(result for result in results if result is not None)
+        #get the index of the match so we know which reporter it was in
+        number = results.index(match)
+        correction_factor = {0 : 0, #dallas
+        1 : 4, #Cranch
+        2 : 13, #wheaton
+        3 : 25, #peters
+        4 : 41, #howard
+        5 : 65, #black
+        6 : 67, #wallace
+        7 : 0, #us
+        }
+        tabulation[key] = str(int(match.group(1)) + correction_factor[number])  + " " + "U.S. " + match.group(3)
+
+               
+               
+           
+            
+    return(tabulation)
+
+
 
 
 ########## MAIN FUNCTIONS
 #analyzes a single opinion in some way. The input is an "open file" in read mode. Almost any information you could want about the opinion is accessible in its name.
 #Analyzer must return a list of tuples (list of pairs to use default flattener)
 def analyzer(doc):
-    
     #Parse HTML into beautiful soup
     soup = BeautifulSoup(doc)
     
@@ -78,8 +124,9 @@ def analyzer(doc):
 
     #Divide the text of the opinion into a list of words and then count them
     tabulation = Counter(re.findall(search_expression,opinion))
- 
-    return tabulation
+    
+    #rewrite the dictionary values so that they contain "normalized" and more easily countable text.
+    return rewrite_values(tabulation) 
 
 #Optionally include a list of headers to add
 headers = []
