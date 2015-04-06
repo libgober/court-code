@@ -39,9 +39,9 @@ def rewrite_values(tabulation):
     wheaton = re.compile("([0-9]{1,3})[\s\(]*([wW]he?a?t?o?n?)[.\s\)]*([0-9]{1,4})").search
     dallas = re.compile("([0-9]{1,3})[\s\(]*([dD]al?l?a?s?)[.\s\)]*([0-9]{1,4})").search
     us = re.compile("([0-9](?![0-9]{0,2}\s*[uU][.\s]*[sS]*[.\s]*[0-9]{1,4}[.\s\)]*[cC|wW|bB|hH|dD|pP]))\s*([uU][.\s]*[sS]*)[.\s]*([0-9]{1,4})").search
-    
+    sct = re.compile("([0-9]{1,3})[\s\(]*([sS][.\s]*[cC]*[tT]*[.\s]*)[.\s\)]*([0-9]{1,4})").search
     #gather these functions into a list
-    funcs = [dallas,cranch,wheaton,peters,howard,black,wallace,us]
+    funcs = [dallas,cranch,wheaton,peters,howard,black,wallace,us,sct]
     
     #apply the list to each key in dictionary
     for key in keys:
@@ -62,10 +62,9 @@ def rewrite_values(tabulation):
         5 : 65, #black
         6 : 67, #wallace
         7 : 0, #us
+        8 : -10000 #supreme court reporter, confusing to handle
         }
         tabulation[key] = str(int(match.group(1)) + correction_factor[number])  + " " + "U.S. " + match.group(3)
-
-               
                
            
             
