@@ -32,6 +32,9 @@ def fix_oneoffs(tabulation):
     if tabulation["411 U.S. ___, 28 (1973)"] != 0:
         del tabulation["411 U.S. ___, 28 (1973)"]
         tabulation["411 U.S. 1, 28 (1973)"] = 1
+    if tabulation["455 U.S . ___, ___, ___"] != 0:
+        del tabulation["455 U.S . ___, ___, ___"]
+        tabulation["455 U.S. 422"]
     return(tabulation)
     
     
